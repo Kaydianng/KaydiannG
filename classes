@@ -1,0 +1,70 @@
+#Kaydiann Gordon
+from dataclasses import dataclass
+
+# Task 1:
+@dataclass
+class Product:
+    id: int
+    name: str
+    category: str
+    price: float
+    stock: int
+
+# Task 2: 
+def read_file(file_name):
+    products = {}
+    for line in open(file_name):
+            line = line.split(",")  
+            id = int(line[0])     
+            name = line[1]
+            category = line[2]
+            price = float(line[3])         
+            stock = int(line[4])          
+
+            product = Product(id, name, category, price, stock)
+            products[product.id] = product  
+    return products
+
+# Task 3.1: 
+def total_stock(products):
+    stock_val= {}
+    for product in products.values():
+        if product.category in stock_val:
+            stock_val[product.category] += product.price * product.stock
+        else:
+            stock_val[product.category] = product.price * product.stock
+
+    print("Total stock value per category:")
+    for category, value in stock_val.items():
+        print(f"- {category}: ${value:.1f}")
+
+# Task 3.2: 
+def expensive_product(products):
+    expensive = max(products.values(), key=lambda   p: p.price)
+    print("Most expensive product:")
+    print(f"- {expensive}")  
+
+# Task 3.3:
+def highest_stock(products):
+    stock_count = {}
+    for product in products.values():
+        if product.category in stock_count:
+            stock_count[product.category] += product.stock
+        else:
+            stock_count[product.category] = product.stock
+
+    highest_stock = max(stock_count, key=stock_count.get)
+    print("Category with the highest stock:")
+    print(f"- {highest_stock} ({stock_count[highest_stock]} items)")
+
+
+def main():
+    file_name = "products.txt"  
+    products = read_file(file_name)
+
+
+        total_stock(products)
+        expensive_product(products) 
+        highest_stock(products)
+
+main()
